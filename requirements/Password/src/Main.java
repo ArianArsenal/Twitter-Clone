@@ -1,4 +1,10 @@
 public class Main {
+
+    /**
+     * Function to check if the password has all the conditions
+     * @param str is a password that wants to be checked
+     * @return  boolean as if the given password has the conditions or not
+     */
     public static boolean passwordChecker(String str){
         boolean upperCaseFlag = false;
         boolean lowerCaseFlag = false;
@@ -15,5 +21,15 @@ public class Main {
         return (lowerCaseFlag && upperCaseFlag);
     }
     public static void main(String[] args) {
+
+        //test
+
+        String pass = "Arian2004m";
+        if(passwordChecker(pass)){
+            System.out.println("valid");
+        }
+        else System.out.println("invalid");
+
+
     }
 }
