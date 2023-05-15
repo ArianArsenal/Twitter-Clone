@@ -1,3 +1,5 @@
 Requirements for project :
 
 https://howtodoinjava.com/java/regex/java-regex-validate-email-address/
+
+https://youtu.be/s7wmiS2mSXY
