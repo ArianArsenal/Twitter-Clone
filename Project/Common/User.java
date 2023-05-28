@@ -1,3 +1,4 @@
+package Common;
 import java.time.LocalDate;
 
 public class User {
@@ -16,7 +17,7 @@ public class User {
     private int month;
     private int day;
 
-    //Date Joined 
+    //Date Joined
     //gets the date from system
     private int joinedyear;
     private int joinedmonth;

@@ -1,3 +1,4 @@
+package Server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,17 +8,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import Common.*;
+import Database.databasemanage;
 
 public class server{
     public static void main(String[] args) {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
         //data base manager method 
         databasemanage.DataBaseManagement();
 
         ExecutorService pool = Executors.newCachedThreadPool();
-        //Executors.newFixedThreadPool(10);
+        //Executors.newFixedThreadPool(4);  == fixed number of clients
         
-        try (ServerSocket welcomingSocket = new ServerSocket(5757)) {
+        try (ServerSocket welcomingSocket = new ServerSocket(configs.getPort())) {
 
             System.out.print("==========================\nServer created.\nShould wait for a client ... \n==========================\n");
 
@@ -42,11 +48,12 @@ public class server{
                 clientID++;
             }
 
-            //System.out.print("done.\nClosing server ... ");
         } catch (IOException ex) {
             System.err.println(ex);
         }
         finally{
+
+            System.out.print("ERROR : Too Many Clients\nClosing server ... \n");
             pool.shutdown();
         }
 
@@ -70,22 +77,20 @@ class ClientHandler implements Runnable {
         try {
             OutputStream out = connectionSocket.getOutputStream();
             InputStream in = connectionSocket.getInputStream();
-            byte[] buffer = new byte[2048];
-
+            
             //sends starting menu for client
-            out.write(menu.ShowHomeMenu().getBytes());
-
-            int read = in.read(buffer);
-            String clientMenuChoice = new String(buffer, 0, read).trim();
+            connection.ServerSend(out, menu.ShowHomeMenu());
+            //gets menu choice from client
+            String clientMenuChoice = connection.ServerRecieve(in);
             
             if(!clientMenuChoice.equals("3")) {
                 // Process the client's menu choice
-                handleMenuChoice(clientMenuChoice, out);
+                handleMenuChoice(clientMenuChoice, out,in);
             }
 
             else if(clientMenuChoice.equals("3")){
                 String exitMessage = "Exiting the app...";
-                out.write(exitMessage.getBytes());
+                connection.ServerSend(out, exitMessage);
             }
 
             System.out.println("Closing client "+ clientID +" connection...");
@@ -96,23 +101,31 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private void handleMenuChoice(String clientMenuChoice, OutputStream out) throws IOException {
+    private void handleMenuChoice(String clientMenuChoice, OutputStream out,InputStream in) throws IOException {
 
         switch (clientMenuChoice) {
             case "1":
                 // Call the SigninMenu method or perform appropriate actions
                 String signUpResponse = "Sign Up option selected.";
-                out.write(signUpResponse.getBytes());
+                connection.ServerSend(out, signUpResponse);
+
+                menu.ServerSignUpMenu(out, in);
+                //TODO
+
                 break;
             case "2":
                 // Call the SignUpMenu method or perform appropriate actions
                 String signInResponse = "Sign In option selected.";
-                out.write(signInResponse.getBytes());
+                connection.ServerSend(out, signInResponse);
+
+                menu.ServerSigninMenu(out, in);
+                //TODO
+
                 break;
             default:
                 // Invalid menu choice, handle accordingly
                 String errorMessage = "Invalid menu choice. Please try again.";
-                out.write(errorMessage.getBytes());
+                connection.ServerSend(out, errorMessage);
                 break;
         }
     }
