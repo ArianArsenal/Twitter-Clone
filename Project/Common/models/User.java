@@ -1,4 +1,4 @@
-package Common;
+package Common.models;
 import java.time.LocalDate;
 
 public class User {
@@ -68,6 +68,8 @@ public class User {
     public String getCountry() {
         return country;
     }
+
+
     public int getJoinedyear() {
         return joinedyear;
     }
@@ -76,6 +78,9 @@ public class User {
     }
     public int getJoinedday() {
         return joinedday;
+    }
+    public String getDatejoined(){
+        return joinedyear + "/" + joinedmonth + "/" + joinedday;
     }
 
 
@@ -89,7 +94,11 @@ public class User {
     public int getDay() {
         return day;
     }
+    public String getBirthdate(){
+        return year + "/" + month + "/" + day;
+    }
 
+    
     //Setters
     public void setPassword(String password) {
         this.password = password;
@@ -99,7 +108,6 @@ public class User {
     }
     //other Setters to be written
 
-    
     // unecessary fields will be removed from ToString later
     @Override
     public String toString() {

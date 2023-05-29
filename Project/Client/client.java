@@ -36,8 +36,6 @@ public class client {
             String serverResponse = connection.ClientRecieve(in);
             System.out.println("Server response:\n" + serverResponse);
 
-            //TODO handle the switch case for entering different menus
-
             switch (clientMenuChoice){
                 case "1":
                     //client side Sign up menu

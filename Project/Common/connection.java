@@ -13,7 +13,7 @@ public class connection{
     }
 
     public static String ClientRecieve(InputStream in) throws IOException {
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[4096];
         int read = in.read(buffer);
         return new String(buffer, 0, read).trim();
     }
@@ -25,7 +25,7 @@ public class connection{
     }
 
     public static String ServerRecieve(InputStream in) throws IOException {
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[4096];
         int read = in.read(buffer);
         return new String(buffer, 0, read).trim();
     }
@@ -39,8 +39,6 @@ public class connection{
  * 
  * 2)
  * String menuResponse = connection.ClientRecieve(in);
- *
- * 
  */
 
 //sending output ways
@@ -50,7 +48,6 @@ public class connection{
  * 
  * 2)
  * connection.ClientSend(out, clientMenuChoice);
- * 
  */
 
 /*

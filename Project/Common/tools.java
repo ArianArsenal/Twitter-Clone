@@ -1,13 +1,19 @@
 package Common;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.*;
 
-import com.mysql.cj.protocol.Resultset;
+import Common.models.User;
+
+// import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.Statement;
 
 public class tools {
 
@@ -44,44 +50,295 @@ public class tools {
         return matcher.matches();
     }
 
-    //TODO a method to check if the userid already exist or not
+    /**
+     * Function to check if the username is already in the database
+     * @param username to check
+     * @return returns booleans true or false
+     */
 
-    public static boolean ExistID(String userid){
-
+     public static boolean ExistID(String userid) {
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-
+    
         try {
             // Load the MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-
+    
             // Connect to the MySQL database
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
-
-            // Create a statement
-            statement = connection.createStatement();
-
-            //TODO Get all the usernames column from the database USER table and check 
-            //TODO 1) if its empty the result set returns null --- > the function returns false == meaning the id doesnt exist so we can sign up
-            //TODO 2) if its not empty the result set returns sth --- > the function returns true == meaning the id exist so we cant sign up and ERROR
-
-            //Execute a query to get all the table info and store them in resultset pointer for later use
-            resultSet = statement.executeQuery("SELECT * FROM USERS WHERE username = "+ userid + "");
-
-            if((resultSet.getFetchSize() == 0)){
-                System.out.println("Its Fine");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT * FROM USERS WHERE username = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, userid); // Set the parameter value
+    
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+    
+            // Check if the result set has any rows
+            if (resultSet.next()) {
+                // User ID exists
+                return true;
+            } else {
+                // User ID does not exist
                 return false;
             }
-            else{
-                System.out.println("Already exists");
-                return true;
-            }
-            
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     
+        return false;
+    }
+    
+    /**
+     * Function to check if the email is already in the database
+     * @param email to check
+     * @return returns boolean true or false
+     * 
+     */
+     public static boolean ExistEmail(String email){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT * FROM USERS WHERE email = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email); // Set the parameter value
+    
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+    
+            // Check if the result set has any rows
+            if (resultSet.next()) {
+                // User email exists
+                return true;
+            } else {
+                // User email does not exist
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return false;
+    }
+
+    public static boolean ExistPhonenumber(String phonenumber){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT * FROM USERS WHERE phonenumber = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, phonenumber); // Set the parameter value
+    
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+    
+            // Check if the result set has any rows
+            if (resultSet.next()) {
+                // User phonenumber exists
+                return true;
+            } else {
+                // User phonenumber does not exits
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return false;
+    }
+
+    
+
+    public static List<String> CountryList() {
+        
+        List<String> countryList = new ArrayList<>();
+    
+        String[] countryCodes = Locale.getISOCountries();
+    
+        for (String countryCode : countryCodes) {
+            Locale.Builder localeBuilder = new Locale.Builder();
+            Locale locale = localeBuilder.setRegion(countryCode).build();
+            String countryName = locale.getDisplayCountry();
+            countryList.add(countryName);
+        }
+    
+        return countryList;
+    }
+
+    public static void InsertUser(User user) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "INSERT INTO USERS VALUES (?,?,?,?,?,?,?,?,?)";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getFirstname()); // Set the parameter value
+            preparedStatement.setString(2, user.getLastname()); // Set the parameter value
+            preparedStatement.setString(3, user.getUsername()); // Set the parameter value
+            preparedStatement.setString(4, user.getPhonenumber()); // Set the parameter value
+            preparedStatement.setString(5, user.getEmail()); // Set the parameter value
+            preparedStatement.setString(6, user.getPassword()); // Set the parameter value
+            preparedStatement.setString(7, user.getDatejoined()); // Set the parameter value
+            preparedStatement.setString(8, user.getCountry()); // Set the parameter value
+            preparedStatement.setString(9, user.getBirthdate()); // Set the parameter value
+
+    
+            // Execute the query
+            preparedStatement.execute();
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
+    public static boolean ExistPassword(String username,String password){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT password FROM USERS WHERE username = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username); // Set the parameter value
+    
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+    
+            // Check if the result set has any rows
+            if (resultSet.next()) {
+                // User password exists
+                String storedPassword = resultSet.getString("password");
+                if(password.equals(storedPassword)){
+                    return true;
+                }
+                else return false;
+                
+            } else {
+                // User password does not exits
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         return false;
     }
 

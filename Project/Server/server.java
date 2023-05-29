@@ -8,7 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import Common.*;
+import Common.connection;
+import Common.menu;
 import Database.databasemanage;
 
 public class server{
@@ -110,8 +111,7 @@ class ClientHandler implements Runnable {
                 connection.ServerSend(out, signUpResponse);
 
                 menu.ServerSignUpMenu(out, in);
-                //TODO
-
+                
                 break;
             case "2":
                 // Call the SignUpMenu method or perform appropriate actions
@@ -119,8 +119,7 @@ class ClientHandler implements Runnable {
                 connection.ServerSend(out, signInResponse);
 
                 menu.ServerSigninMenu(out, in);
-                //TODO
-
+                
                 break;
             default:
                 // Invalid menu choice, handle accordingly

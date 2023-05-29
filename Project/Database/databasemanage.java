@@ -26,8 +26,23 @@ public class databasemanage {
 
             
             //Execute a query to create table / if is already created ,it skips this part without error
-            statement.execute("CREATE TABLE IF NOT EXISTS USERS (username VARCHAR(255) NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT)");
-            
+
+            //statement.execute("DROP TABLE USERS");
+
+            String sql = "CREATE TABLE IF NOT EXISTS USERS (" +
+                "name VARCHAR(255) NOT NULL, " +
+                "lastname VARCHAR(255) NOT NULL, " +
+                "username VARCHAR(255) NOT NULL UNIQUE, " +
+                "phonenumber VARCHAR(255) NOT NULL UNIQUE, " +
+                "email VARCHAR(255) NOT NULL UNIQUE, " +
+                "password TEXT NOT NULL, " +
+                "datejoined DATE NOT NULL, " +
+                "country VARCHAR(255) NOT NULL, " +
+                "birthdate DATE NOT NULL, " +
+                "PRIMARY KEY (username, phonenumber, email)" +")";
+            statement.execute(sql);
+
+
             // statement.execute("INSERT INTO USERS VALUES ('Arian','Pass','EMAIL.COM')");
             // statement.execute("INSERT INTO USERS VALUES ('Arian2','Pass2','EMAIL.COM2')");
             
