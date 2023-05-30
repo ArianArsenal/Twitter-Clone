@@ -1,4 +1,4 @@
-package Common.models;
+package Common.models.TweetModels;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
