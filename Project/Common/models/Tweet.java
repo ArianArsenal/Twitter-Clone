@@ -58,7 +58,7 @@ public abstract class Tweet {
     public Tweet(String text) {
         this.text = text;
     }
-
+    //Converts a tweet's ID into to hashCode
     @Override
     public int hashCode() {
         return Objects.hash(username,text,year,month,day,hour,minute,second);
