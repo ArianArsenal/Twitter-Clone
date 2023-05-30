@@ -42,10 +42,22 @@ public class databasemanage {
                 "PRIMARY KEY (username, phonenumber, email)" +")";
             statement.execute(sql);
 
+            String sql2 = "CREATE TABLE IF NOT EXISTS bio(" +
+            "username VARCHAR(255) NOT NULL, " +
+            "bioText VARCHAR(161), " +  
+            "location VARCHAR(255), " + 
+            "website VARCHAR(255), " +    
+            "PRIMARY KEY (username)" +
+            ")";
 
-            // statement.execute("INSERT INTO USERS VALUES ('Arian','Pass','EMAIL.COM')");
-            // statement.execute("INSERT INTO USERS VALUES ('Arian2','Pass2','EMAIL.COM2')");
-            
+            statement.execute(sql2);
+
+            String sql3 = "CREATE TABLE IF NOT EXISTS follow(" +
+            "username VARCHAR(255) NOT NULL, " +
+            "following_id VARCHAR(255) NOT NULL"+ 
+            ")";
+            statement.execute(sql3);
+
             //Execute a query to get all the table info and store them in resultset pointer for later use
             // resultSet = statement.executeQuery("SELECT * FROM USERS");
 

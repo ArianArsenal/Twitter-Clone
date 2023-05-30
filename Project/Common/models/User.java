@@ -109,14 +109,18 @@ public class User {
     //other Setters to be written
 
     // unecessary fields will be removed from ToString later
-    @Override
-    public String toString() {
-        return "User [firstname=" + firstname + ", lastname=" + lastname + ", username=" + username + ", password="
-                + password + ", email=" + email + ", phonenumber=" + phonenumber + ", country=" + country + ", year="
-                + year + ", month=" + month + ", day=" + day + ", joinedyear=" + joinedyear + ", joinedmonth="
-                + joinedmonth + ", joinedday=" + joinedday + "]";
-    }
+    // @Override
+    // public String toString() {
+    //     return "User [firstname=" + firstname + ", lastname=" + lastname + ", username=" + username + ", password="
+    //             + password + ", email=" + email + ", phonenumber=" + phonenumber + ", country=" + country + ", year="
+    //             + year + ", month=" + month + ", day=" + day + ", joinedyear=" + joinedyear + ", joinedmonth="
+    //             + joinedmonth + ", joinedday=" + joinedday + "]";
+    // }
 
+
+    public static void Follow() {
+        
+    }
     
 
 }

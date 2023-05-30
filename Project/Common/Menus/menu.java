@@ -1,15 +1,22 @@
-package Common;
+package Common.Menus;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import Common.connection;
+import Common.tools;
 import Common.models.User;
 import Server.Logs.logs;
 
 
+
 public class menu {
+
+    public static String ShowHomeMenu(){ //Menu that shows the login-sign in - exist options
+        return "===============\n1-Sign-Up\n2-Sign-In\n3-Exit\n===============\n";
+    }
 
     public static void ClientSigninMenu(OutputStream out , InputStream in) throws IOException {    //Client-side sign in menu
 
@@ -69,6 +76,9 @@ public class menu {
 
         //! TEST
         System.out.println("Ok");
+
+        //Enters TimeLine 
+        timelineMenus.TimeLine(out, in);
 
         sc.close();
     }
@@ -232,6 +242,9 @@ public class menu {
         serverResponse = connection.ClientRecieve(in);
         System.out.println(serverResponse);
 
+        //Enters TimeLine 
+        timelineMenus.TimeLine(out, in);
+
         sc.close();
     }
 
@@ -280,7 +293,8 @@ public class menu {
         //sends the SignIn Log
         logs.SignInLog(username);
 
-        //
+        //Enters TimeLine
+        timelineMenus.TimeLineManagement(out, in);
 
     }
 
@@ -449,12 +463,10 @@ public class menu {
 
         
         //enter timeline
+        timelineMenus.TimeLineManagement(out, in);
         
         
-    }
-
-    public static String ShowHomeMenu(){ //Menu that shows the login-sign in - exist options
-        return "===============\n1-Sign-Up\n2-Sign-In\n3-Exit\n===============\n";
     }
 
 }
+

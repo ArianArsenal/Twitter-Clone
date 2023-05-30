@@ -9,8 +9,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import Common.connection;
-import Common.menu;
+import Common.Menus.menu;
 import Database.databasemanage;
+
 
 public class server{
     public static void main(String[] args) {
@@ -80,6 +81,7 @@ class ClientHandler implements Runnable {
             InputStream in = connectionSocket.getInputStream();
             
             //sends starting menu for client
+            
             connection.ServerSend(out, menu.ShowHomeMenu());
             //gets menu choice from client
             String clientMenuChoice = connection.ServerRecieve(in);
