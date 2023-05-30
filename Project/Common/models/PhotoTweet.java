@@ -10,7 +10,7 @@ public class PhotoTweet extends Tweet{
         super(text);
         this.photopost = photopost;
     }
-
+    //Converts a photo tweet's ID into to hashCode
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), photopost);

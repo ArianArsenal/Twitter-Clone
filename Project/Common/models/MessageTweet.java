@@ -7,6 +7,14 @@ public class MessageTweet extends Tweet {
         super(text);
         this.tweetid = super.hashCode();
     }
+
+    public int getTweetid() {
+        return tweetid;
+    }
+
+    public void setTweetid(int tweetid) {
+        this.tweetid = tweetid;
+    }
     
     
     
