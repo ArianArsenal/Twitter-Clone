@@ -26,9 +26,13 @@ public abstract class Tweet {
 
 
     
-
+    //! THIS SHOULD BE CHANGED
+    //in tweet we only need to give the text to the constructor
+    
     public Tweet(String text, int likeCount, int retweetCount, int replyCount, int tweetid, boolean isFavStar, String username) {
         this.text = text;
+        this.username = username;
+
         this.likeCount = likeCount;
         this.retweetCount = retweetCount;
         this.replyCount = replyCount;
@@ -40,10 +44,11 @@ public abstract class Tweet {
         this.year = currentDate.getYear();
         this.month = currentDate.getMonthValue();
         this.day = currentDate.getDayOfMonth();
+        
         this.hour = currentTime.getHour();
         this.minute = currentTime.getMinute();
         this.second = currentTime.getSecond();
-        this.username = username;
+        
 
     }
 
