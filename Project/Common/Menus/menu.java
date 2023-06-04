@@ -78,7 +78,7 @@ public class menu {
         System.out.println("Ok");
 
         //Enters TimeLine 
-        timelineMenus.TimeLine(out, in);
+        timelineMenus.ClientTimeLine(out, in);
 
         sc.close();
     }
@@ -243,7 +243,7 @@ public class menu {
         System.out.println(serverResponse);
 
         //Enters TimeLine 
-        timelineMenus.TimeLine(out, in);
+        timelineMenus.ClientTimeLine(out, in);
 
         sc.close();
     }
@@ -294,7 +294,7 @@ public class menu {
         logs.SignInLog(username);
 
         //Enters TimeLine
-        timelineMenus.TimeLineManagement(out, in);
+        timelineMenus.ServerTimeLine(out, in ,username);
 
     }
 
@@ -463,7 +463,7 @@ public class menu {
 
         
         //enter timeline
-        timelineMenus.TimeLineManagement(out, in);
+        timelineMenus.ServerTimeLine(out, in, username);
         
         
     }

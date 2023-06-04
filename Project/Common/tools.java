@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.*;
 
+//import java.time.LocalDate;
+import java.time.LocalDateTime;
+// import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import Common.models.User;
 
 // import com.mysql.cj.protocol.Resultset;
@@ -215,8 +220,6 @@ public class tools {
         return false;
     }
 
-    
-
     public static List<String> CountryList() {
         
         List<String> countryList = new ArrayList<>();
@@ -342,7 +345,16 @@ public class tools {
         return false;
     }
 
-    //search user 
+     
+    //shows current time ( maybe changed later)
+    public static void CurrentTime() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedTime = currentTime.format(formatter);
+        System.out.println("Current Time: " + formattedTime);
+    }
 
-
+    public static void main(String[] args) {
+        CurrentTime();
+    }
 }

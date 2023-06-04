@@ -24,12 +24,37 @@ public abstract class Tweet {
 
     private boolean isFavStar = false;
 
-
-    
-    //! THIS SHOULD BE CHANGED
     //in tweet we only need to give the text to the constructor
     
-    public Tweet(String text, int likeCount, int retweetCount, int replyCount, int tweetid, boolean isFavStar, String username) {
+    public Tweet(String text,String username) {
+        this.text = text;
+        this.username = username;
+
+        this.likeCount = 0 ;
+        this.retweetCount = 0 ;
+        this.replyCount = 0 ;
+        this.isFavStar = false;
+
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        //tweet date
+        this.year = currentDate.getYear();
+        this.month = currentDate.getMonthValue();
+        this.day = currentDate.getDayOfMonth();
+        
+        //tweet time
+        this.hour = currentTime.getHour();
+        this.minute = currentTime.getMinute();
+        this.second = currentTime.getSecond();
+        
+    }
+
+    //TODO: Another Constructor for when we want to fetch the tweets from DataBase
+
+    //int tweetid
+    public Tweet(String text,int likeCount,int retweetCount,int replyCount,Boolean isFavStar,String username){
+
         this.text = text;
         this.username = username;
 
@@ -38,31 +63,21 @@ public abstract class Tweet {
         this.replyCount = replyCount;
         this.isFavStar = isFavStar;
 
-        LocalDate currentDate = LocalDate.now();
-        LocalTime currentTime = LocalTime.now();
+        // LocalDate currentDate = LocalDate.now();
+        // LocalTime currentTime = LocalTime.now();
 
-        this.year = currentDate.getYear();
-        this.month = currentDate.getMonthValue();
-        this.day = currentDate.getDayOfMonth();
+        //TODO:tweet date
+        // this.year = currentDate.getYear();
+        // this.month = currentDate.getMonthValue();
+        // this.day = currentDate.getDayOfMonth();
         
-        this.hour = currentTime.getHour();
-        this.minute = currentTime.getMinute();
-        this.second = currentTime.getSecond();
+        //TODO:tweet time
+        // this.hour = currentTime.getHour();
+        // this.minute = currentTime.getMinute();
+        // this.second = currentTime.getSecond();
         
-
     }
 
-    public String gettext() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Tweet(String text) {
-        this.text = text;
-    }
     //Converts a tweet's ID into to hashCode
     @Override
     public int hashCode() {
@@ -72,59 +87,25 @@ public abstract class Tweet {
     
     public void FavStar() {
         if (this.likeCount >= 10){
-            this.isFavStar = true; //creepy
+            this.isFavStar = true; 
         }
-        
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    //when called on a tweet object , it will increament the likes
+    public void like() {
+        likeCount++;
+        FavStar(); // Call the method to update isFavStar
+    }
+    
+    public boolean isFavStar() {
+        return isFavStar;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public void setRetweetCount(int retweetCount) {
-        this.retweetCount = retweetCount;
-    }
-
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
-    public void setSecond(int second) {
-        this.second = second;
-    }
-
-    public void setFavStar(boolean isFavStar) {
-        this.isFavStar = isFavStar;
-    }
-
+    
+    //Getters
     public String getUsername() {
         return username;
     }
-
     public String getText() {
         return text;
     }
@@ -132,11 +113,9 @@ public abstract class Tweet {
     public int getLikeCount() {
         return likeCount;
     }
-
     public int getRetweetCount() {
         return retweetCount;
     }
-
     public int getReplyCount() {
         return replyCount;
     }
@@ -144,11 +123,9 @@ public abstract class Tweet {
     public int getYear() {
         return year;
     }
-
     public int getMonth() {
         return month;
     }
-
     public int getDay() {
         return day;
     }
@@ -156,21 +133,15 @@ public abstract class Tweet {
     public int getHour() {
         return hour;
     }
-
     public int getMinute() {
         return minute;
     }
-
     public int getSecond() {
         return second;
     }
 
-    public boolean isFavStar() {
-        return isFavStar;
-    }
-    
 
-    
-    
-    
+    //TODO 
+
+
 }

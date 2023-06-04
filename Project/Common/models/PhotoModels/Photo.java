@@ -14,6 +14,7 @@ public class Photo {
         File file = new File(filePath);
         image = ImageIO.read(file);
     }
+    
     //Saves the photo if nessessory 
     public void save(String filePath, String format) throws IOException {
         File file = new File(filePath);
