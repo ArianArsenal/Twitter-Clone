@@ -25,16 +25,24 @@ public class menu {
 
         Scanner sc = new Scanner(System.in);
 
+        //!
+        // while (sc.nextLine().equals("x")) {
+        //     return;
+        // }
+
         String serverResponse = "";
+        String username = "";
 
         boolean validUsername = false;
         while (!validUsername){
 
             serverResponse = connection.ClientRecieve(in);
+            
             System.out.println(serverResponse);
             
             //Sends username
-            connection.ClientSend(out, sc.nextLine());
+            username = sc.nextLine();
+            connection.ClientSend(out, username);
 
             serverResponse = connection.ClientRecieve(in);
             
@@ -78,7 +86,7 @@ public class menu {
         System.out.println("Ok");
 
         //Enters TimeLine 
-        timelineMenus.ClientTimeLine(out, in);
+        timelineMenus.ClientTimeLine(out, in,username);
 
         sc.close();
     }
@@ -89,6 +97,11 @@ public class menu {
         System.out.flush();
 
         Scanner sc = new Scanner(System.in);
+
+        //!
+        // while (sc.nextLine().equals("x")) {
+        //     return;
+        // }
 
         String serverResponse = connection.ClientRecieve(in);
         System.out.println(serverResponse);
@@ -102,6 +115,8 @@ public class menu {
         //Sends lastname
         connection.ClientSend(out, sc.nextLine());
 
+        String username ="";
+
         boolean validUsername = false;
         while (!validUsername){
 
@@ -109,7 +124,8 @@ public class menu {
             System.out.println(serverResponse);
             
             //Sends username
-            connection.ClientSend(out, sc.nextLine());
+            username = sc.nextLine();
+            connection.ClientSend(out, username);
 
             serverResponse = connection.ClientRecieve(in);
             
@@ -243,7 +259,7 @@ public class menu {
         System.out.println(serverResponse);
 
         //Enters TimeLine 
-        timelineMenus.ClientTimeLine(out, in);
+        timelineMenus.ClientTimeLine(out, in, username);
 
         sc.close();
     }

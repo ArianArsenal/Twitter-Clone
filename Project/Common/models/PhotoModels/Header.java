@@ -2,7 +2,7 @@ package Common.models.PhotoModels;
 
 import java.io.IOException;
 import java.io.File;
-//Dies from cringe
+
 public class Header extends Photo {
 
     public Header(String filePath) throws IOException {

@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 import Common.models.User;
 
+
 // import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Connection;
@@ -354,6 +355,49 @@ public class tools {
         System.out.println("Current Time: " + formattedTime);
     }
 
+    public static String CalculateTimePassed(String tweetTime, String tweetDate) {
+        // Tokenize
+        String[] time = tweetTime.split(":"); // 0:hour 1:minute
+        String[] date = tweetDate.split("-"); // 0:year 1:month 2:day
+
+        int tweetHour = Integer.parseInt(time[0]);
+        int tweetMinute = Integer.parseInt(time[1]);
+
+        // Get current time
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // Create LocalDateTime object for the tweet time
+        LocalDateTime tweetDateTime = LocalDateTime.of(
+            Integer.parseInt(date[0]), // year
+            Integer.parseInt(date[1]), // month
+            Integer.parseInt(date[2]), // day
+            tweetHour,
+            tweetMinute
+        );
+
+        // Calculate the difference in minutes between the tweet time and current time
+        long minutesPassed = java.time.Duration.between(tweetDateTime, currentTime).toMinutes();
+
+        if (minutesPassed < 60) {
+            // Less than 1 hour ago
+            return minutesPassed + "m ago";
+
+        } else if (minutesPassed < 1440) {
+            // Between 1 hour and 24 hours ago
+            long hoursPassed = minutesPassed / 60;
+            return hoursPassed + "h ago";
+
+        } else {
+            // More than 24 hours ago
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH);
+            String formattedDate = tweetDateTime.format(formatter);
+
+            return formattedDate;
+        }
+
+    }
+
+    //! TEST
     public static void main(String[] args) {
         CurrentTime();
     }

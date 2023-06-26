@@ -76,35 +76,38 @@ class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+
         try {
             OutputStream out = connectionSocket.getOutputStream();
             InputStream in = connectionSocket.getInputStream();
-            
-            //sends starting menu for client
-            
-            connection.ServerSend(out, menu.ShowHomeMenu());
-            //gets menu choice from client
-            String clientMenuChoice = connection.ServerRecieve(in);
-            
-            if(!clientMenuChoice.equals("3")) {
-                // Process the client's menu choice
-                handleMenuChoice(clientMenuChoice, out,in);
-            }
 
-            else if(clientMenuChoice.equals("3")){
+            boolean exit = false;
+            while (!exit) {
+            // sends starting menu for client
+            connection.ServerSend(out, menu.ShowHomeMenu());
+
+            // gets menu choice from client
+            String clientMenuChoice = connection.ServerRecieve(in);
+
+            if (!clientMenuChoice.equals("3")) {
+                // Process the client's menu choice
+                exit = handleMenuChoice(clientMenuChoice, out, in);
+            } else {
                 String exitMessage = "Exiting the app...";
                 connection.ServerSend(out, exitMessage);
+                exit = true;
             }
+        }
 
-            System.out.println("Closing client "+ clientID +" connection...");
-            connectionSocket.close();
+        System.out.println("Closing client " + clientID + " connection...");
+        connectionSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void handleMenuChoice(String clientMenuChoice, OutputStream out,InputStream in) throws IOException {
+    private boolean handleMenuChoice(String clientMenuChoice, OutputStream out,InputStream in) throws IOException {
 
         switch (clientMenuChoice) {
             case "1":
@@ -129,6 +132,8 @@ class ClientHandler implements Runnable {
                 connection.ServerSend(out, errorMessage);
                 break;
         }
+
+        return false; // Return false to continue the loop
     }
 
 }

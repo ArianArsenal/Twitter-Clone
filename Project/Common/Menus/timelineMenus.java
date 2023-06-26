@@ -3,15 +3,18 @@ package Common.Menus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Common.connection;
+import Common.tools;
 import Common.models.TimeLine;
+import Common.models.TweetModels.Tweet;
 
 public class timelineMenus {
     
     //client side
-    public static void ClientTimeLine(OutputStream out , InputStream in) throws IOException{
+    public static void ClientTimeLine(OutputStream out , InputStream in,String username) throws IOException{
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -29,6 +32,7 @@ public class timelineMenus {
         switch (clientTimeLineChoice) {
             case "1":
                 //Home Shows tweets of timeline
+                HomeMenuClient(out,in,username);
                 break;
             case "2":
                 //Shows Search Bar for searching name, lastname, username
@@ -80,7 +84,7 @@ public class timelineMenus {
                 ProfileMenuServer(out,in);
                 break;
             case "4":
-
+                
                 break;
             case "5":
 
@@ -117,6 +121,7 @@ public class timelineMenus {
                 break;
             case "4":
                 
+                sc.close();
                 return;
 
             default:
@@ -156,15 +161,73 @@ public class timelineMenus {
 
     public static void HomeMenuServer(OutputStream out , InputStream in, String username){
 
+        //add new tweet 
+        
+
         //makes a timeline object 
         TimeLine userTimeLine = new TimeLine(username);
+
+        userTimeLine.retrieveFollowings(username);
+
+        ArrayList<Tweet> tweets = userTimeLine.getFollowTweets();
+        
+        for (Tweet tweet : tweets) {
+
+            // Process each tweet here
+            System.out.println("=====" + tweet.getUsername() + "=====");
+            System.out.println(tweet.getText());
+            System.out.println("Likes: " + tweet.getLikeCount());
+            System.out.println("Retweets: " + tweet.getRetweetCount());
+            System.out.println("Comments: " + tweet.getReplyCount());
+            
+            //should now calculate the time passed from the tweet
+
+            String tweetTime = tools.CalculateTimePassed(tweet.getTweetTime(),tweet.getTweetDate());
+
+
+
+            System.out.println("============" + tweetTime + "========================");
+        }
 
         
         
 
     }
 
-    public static void HomeMenuClient(){
+
+
+    public static void HomeMenuClient(OutputStream out , InputStream in, String username) throws IOException{
+
+        //shows the tweets 
+
+        //add new tweet
+        
+        //make a new tweet object and show it
+        // TimeLine userTimeLine = new TimeLine(username);
+        // connection.ServerSend(out, userTimeLine.showTimeline());
+
+        // //gets the tweet choice from the user
+        // String tweetChoice = connection.ServerRecieve(in);
+
+        // switch (tweetChoice) {
+        //     case "1":
+        //         //like
+        //         break;
+        //     case "2":
+        //         //retweet
+        //         break;
+        //     case "3":
+        //         //comment
+        //         break;
+        //     case "4":
+        //         //back
+        //         return;
+        //     default:
+        //         break;
+        // }
+
+
+
 
     }
 

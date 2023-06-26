@@ -58,18 +58,32 @@ public class databasemanage {
             ")";
             statement.execute(sql3);
 
-            //Execute a query to get all the table info and store them in resultset pointer for later use
-            // resultSet = statement.executeQuery("SELECT * FROM USERS");
 
-            // //Process the query result
-            // while (resultSet.next()) {
-            //     // Retrieve data from the result set
-            //     String username = resultSet.getString("username");
-            //     String password = resultSet.getString("password");
+            String sql4 = "CREATE TABLE IF NOT EXISTS tweet (" +
+            "tweetId INT PRIMARY KEY AUTO_INCREMENT, " +
+            "username VARCHAR(255) NOT NULL, " +
+            "text VARCHAR(255), " +
+            "likeCount INT, " +
+            "retweetCount INT, " +
+            "replyCount INT, " +
+            "tweetDate VARCHAR(50), " +
+            "tweetTime VARCHAR(50), " +
+            "tweetType INT, " +
+            "isFavStar BOOLEAN" +
+            ")";
+            statement.execute(sql4);
 
-            //     // Do something with the retrieved data
-            //     System.out.println(username + " " + password);
-            // }
+
+            String sql5 = "CREATE TABLE IF NOT EXISTS photo (" +
+            "photoId INT AUTO_INCREMENT PRIMARY KEY," +
+            "tweetId INT," +
+            "filePath VARCHAR(255)" +
+            ")";
+            statement.execute(sql5);
+
+
+
+            
 
         } catch (ClassNotFoundException | SQLException e) {
 

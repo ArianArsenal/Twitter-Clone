@@ -3,10 +3,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 public class connection{
 
-    //*Client side
+    //* Client side
 
     public static void ClientSend(OutputStream out, String input) throws IOException {
         out.write(input.getBytes());
@@ -15,10 +14,15 @@ public class connection{
     public static String ClientRecieve(InputStream in) throws IOException {
         byte[] buffer = new byte[4096];
         int read = in.read(buffer);
-        return new String(buffer, 0, read).trim();
+        if (read > 0) {
+            return new String(buffer, 0, read).trim();
+        } else {
+            // Handle the case where no data is read
+            return ""; // or any appropriate value based on your requirements
+        }
     }
 
-    //*Server side
+    //* Server side
 
     public static void ServerSend(OutputStream out, String input) throws IOException {
         out.write(input.getBytes());
@@ -27,9 +31,13 @@ public class connection{
     public static String ServerRecieve(InputStream in) throws IOException {
         byte[] buffer = new byte[4096];
         int read = in.read(buffer);
-        return new String(buffer, 0, read).trim();
+        if (read > 0) {
+            return new String(buffer, 0, read).trim();
+        } else {
+            // Handle the case where no data is read
+            return ""; // or any appropriate value based on your requirements
+        }
     }
-    
 }
 
 //getting input ways
