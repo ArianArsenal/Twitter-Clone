@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="368.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.firstscene.SecondSceneController">
+    <children>
+        <AnchorPane fx:id="anchorPane" prefHeight="0.0" prefWidth="200.0">
+            <children>
+                <Button alignment="TOP_LEFT" layoutY="-1.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #7a7a7a; -fx-border-radius: 50; -fx-background-radius: 50;" text="Back">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <ImageView fx:id="imageView" fitHeight="134.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+            <image>
+                <Image url="@../../../../../580b57fcd9996e24bc43c53e.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="label" alignment="CENTER" prefHeight="30.0" prefWidth="248.0" textAlignment="CENTER" textFill="#04ff00" VBox.vgrow="ALWAYS">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <VBox fx:id="vBox" alignment="CENTER" spacing="10.0">
+            <children>
+                <TextField fx:id="usernameTF" maxWidth="200.0" minWidth="100.0" promptText="username" />
+                <PasswordField fx:id="passwordTF" maxWidth="200.0" minHeight="15.0" minWidth="100.0" promptText="password" />
+                <Separator opacity="0.0" orientation="VERTICAL" />
+            </children>
+        </VBox>
+        <Button fx:id="loginBTN" mnemonicParsing="false" onAction="#buttonClicked" style="-fx-background-color: #7a7a7a; -fx-border-radius: 50; -fx-background-radius: 50;" text="Login" VBox.vgrow="ALWAYS">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Button>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

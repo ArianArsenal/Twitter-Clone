@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #14193d;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.firstscene.SearchController">
+   <children>
+      <AnchorPane>
+         <children>
+            <JFXButton fx:id="backButton" onAction="#exit" style="-fx-background-color: #232957;" text="Back" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="imageView" fitHeight="108.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../TwitterFinal/assests/twitter-icon-download-18.png" />
+         </image>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </ImageView>
+      <TextField fx:id="textField" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Search..." />
+      <ListView fx:id="profileComponentListView" maxWidth="500.0" minWidth="150.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <Separator opacity="0.0" orientation="VERTICAL" prefHeight="52.0" prefWidth="11.0" />
+      <Label alignment="CENTER" prefHeight="27.0" prefWidth="222.0" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <HBox alignment="TOP_CENTER" prefHeight="133.0" prefWidth="600.0" spacing="25.0">
+         <children>
+            <JFXButton fx:id="submitButton" onAction="#submit" style="-fx-background-color: #232957;" text="Submit" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="85.0" prefWidth="242.0" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Separator opacity="0.0" orientation="VERTICAL" prefHeight="113.0" prefWidth="0.0" />
+   </children>
+</VBox>

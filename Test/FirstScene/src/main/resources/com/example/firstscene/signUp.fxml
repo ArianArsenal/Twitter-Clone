@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="641.0" prefWidth="636.0" spacing="8.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.firstscene.SignUpController">
+    <children>
+      <AnchorPane fx:id="anchorPane" prefHeight="0.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="backBTN" alignment="TOP_LEFT" layoutY="-1.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #7a7a7a; -fx-border-radius: 50; -fx-background-radius: 50;" text="Back" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+        <ImageView fx:id="imageView" fitHeight="190.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+            <image>
+                <Image url="@../../../../../580b57fcd9996e24bc43c53e.png" />
+            </image>
+        </ImageView>
+        <TextField fx:id="firstNameTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="First name" style="-fx-background-radius: 10;" />
+        <TextField fx:id="lastNameTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Last name" style="-fx-background-radius: 10;" />
+        <TextField fx:id="usernameTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Username" style="-fx-background-radius: 10;" />
+        <PasswordField fx:id="passwordTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Password" style="-fx-background-radius: 10;" />
+        <PasswordField fx:id="confirmTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Confirm Password" style="-fx-background-radius: 10;" />
+        <TextField fx:id="emailTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Email" style="-fx-background-radius: 10;" />
+        <TextField fx:id="numberTF" maxWidth="800.0" minWidth="300.0" prefWidth="400.0" promptText="Phone Number" style="-fx-background-radius: 10;" />
+      <HBox alignment="CENTER" prefHeight="26.0" prefWidth="589.0">
+         <children>
+            <Label text="Country         " textFill="WHITE" />
+              <ChoiceBox fx:id="country" style="-fx-background-radius: 10;" />
+         </children>
+      </HBox>
+      <Button fx:id="signUp" mnemonicParsing="false" onAction="#clickSignUp" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #7a7a7a; -fx-background-radius: 50;" text="Sign Up" textFill="WHITE" />
+      <CheckBox fx:id="checkBox" mnemonicParsing="false" text="I consent" textFill="WHITE" />
+      <Label fx:id="label" alignment="CENTER" prefHeight="60.0" prefWidth="432.0" textFill="RED">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

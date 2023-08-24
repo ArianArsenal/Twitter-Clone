@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="676.0" maxWidth="800.0" minHeight="600.0" minWidth="663.0" prefHeight="676.0" prefWidth="663.0" style="-fx-background-color: #14193d;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.firstscene.ProfileController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane prefHeight="178.0" prefWidth="663.0">
+               <children>
+                  <ImageView fx:id="header" fitHeight="184.0" fitWidth="655.0" layoutX="4.0" pickOnBounds="true" />
+               </children>
+            </AnchorPane>
+            <Circle fx:id="avatarCircle" layoutX="66.0" layoutY="186.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </AnchorPane>
+      <HBox>
+         <children>
+            <VBox prefHeight="102.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="usernameLabel" prefHeight="38.0" prefWidth="306.0" text="\@Username" textFill="WHITE">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nameLabel" prefHeight="38.0" prefWidth="306.0" text="Full Name!" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="42.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefHeight="124.0" prefWidth="350.0" spacing="15.0">
+               <children>
+                  <JFXButton fx:id="editAvatarButton" onAction="#setAvatar" prefHeight="31.0" prefWidth="251.0" style="-fx-background-color: #232957;" text="Edit avatar..." textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="editHeaderButton" onAction="#editHeader" prefHeight="31.0" prefWidth="250.0" style="-fx-background-color: #232957;" text="Edit Header..." textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="302.0" prefWidth="663.0">
+         <children>
+            <Label fx:id="followingCountLabel" layoutX="175.0" layoutY="63.0" prefHeight="28.0" prefWidth="122.0" text="935" textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="63.0" text="Followings " textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="followerCountLabel" layoutX="175.0" layoutY="19.0" prefHeight="28.0" prefWidth="122.0" text="99999999" textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="14.0" prefHeight="38.0" prefWidth="122.0" text="Followers " textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="216.0" layoutY="140.0" prefHeight="38.0" prefWidth="228.0" textFill="RED">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="submitButton" layoutX="260.0" layoutY="188.0" onAction="#submit" prefHeight="38.0" prefWidth="139.0" style="-fx-background-color: #232957;" text="Submit" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="exit" layoutX="260.0" layoutY="239.0" onAction="#exit" prefHeight="38.0" prefWidth="139.0" style="-fx-background-color: #232957;" text="Exit" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+            <TextArea fx:id="bioTextArea" layoutX="365.0" layoutY="14.0" prefHeight="138.0" prefWidth="284.0" promptText="Your bio..." />
+            <Label fx:id="bioLabel" alignment="TOP_LEFT" layoutX="89.0" layoutY="105.0" prefHeight="70.0" prefWidth="228.0" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="112.0" text="Bio" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
