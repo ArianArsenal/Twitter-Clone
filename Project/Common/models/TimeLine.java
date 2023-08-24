@@ -1,5 +1,7 @@
 package Common.models;
 
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,11 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import Common.models.PhotoModels.Photo;
-import Common.models.TweetModels.MessageTweet;
-import Common.models.TweetModels.PhotoTweet;
-import Common.models.TweetModels.Tweet;
 
 public class TimeLine {
     
@@ -46,33 +43,39 @@ public class TimeLine {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username); // Set the parameter value
     
-
+            //TODO
             //!TEST
             PreparedStatement tst2;
-            Tweet tst = new MessageTweet("this is a test message tweet", "M", 1);
-            String query2 = "INSERT INTO tweet (tweetId, username , text , likeCount , retweetCount , replyCount , tweetDate ,tweetTime, tweetType, isFavStar) VALUES (?,?,?,?,?,?,?,?,?,?)";
-            
+            Tweet tst = new Tweet("this is a test message tweet", "M", null,"name",null);
+            // String query2 = "INSERT INTO tweet (tweetId, username , text , likeCount , retweetCount , replyCount , tweetDate ,tweetTime, tweetType, isFavStar) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            String query2 = "INSERT INTO tweet (tweetId, username , firstname , text , likeCount , retweetCount , replyCount , quoteCount , isFavStar , tweetDate , tweetTime, tweetImage , profilePic ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
             tst2 = connection.prepareStatement(query2);
 
             tst2.setInt(1, tst.hashCode());
             tst2.setString(2, tst.getUsername());
-            tst2.setString(3, tst.getText());
-            tst2.setInt(4, tst.getLikeCount());
-            tst2.setInt(5, tst.getRetweetCount());
-            tst2.setInt(6, tst.getReplyCount());
+            tst2.setString(3, tst.getFirstname());
+            tst2.setString(4, tst.getText());
 
-            tst2.setString(7, tst.getTweetDate());
-            tst2.setString(8, tst.getTweetTime());
+            tst2.setInt(5, tst.getLikeCount());
+            tst2.setInt(6, tst.getRetweetCount());
+            tst2.setInt(7, tst.getReplyCount());
+            tst2.setInt(8, tst.getQuoteCount());
 
-            tst2.setInt(9, tst.getTweetType());
-            tst2.setBoolean(10, tst.getIsFavStar());
-            
+            tst2.setBoolean(9, tst.getIsFavStar());
+
+            tst2.setString(10, tst.getTweetDate());
+            tst2.setString(11, tst.getTweetTime());
+
+            tst2.setString(12, tst.getTweetImageString());
+            tst2.setString(13, tst.getProfilePicString());
+
             tst2.executeUpdate();
 
 
             PreparedStatement tst3;
-            Tweet tweet3 = new MessageTweet("this is a FAV tweet", "Arian", 1);
-            String query3 = "INSERT INTO tweet (tweetId, username , text , likeCount , retweetCount , replyCount , tweetDate ,tweetTime, tweetType, isFavStar) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            Tweet tweet3 = new Tweet("this is a FAV tweet", "Arian", null,"Arian",null);
+            String query3 = "INSERT INTO tweet (tweetId, username , firstname , text , likeCount , retweetCount , replyCount , quoteCount , isFavStar , tweetDate , tweetTime, tweetImage , profilePic ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
             
             tst3 = connection.prepareStatement(query3);
 
@@ -82,19 +85,23 @@ public class TimeLine {
 
             tst3.setInt(1, tweet3.hashCode());
             tst3.setString(2, tweet3.getUsername());
-            tst3.setString(3, tweet3.getText());
-            tst3.setInt(4, tweet3.getLikeCount());
-            tst3.setInt(5, tweet3.getRetweetCount());
-            tst3.setInt(6, tweet3.getReplyCount());
+            tst3.setString(3, tweet3.getFirstname());
+            tst3.setString(4, tweet3.getText());
 
-            tst3.setString(7, tweet3.getTweetDate());
-            tst3.setString(8, tweet3.getTweetTime());
+            tst3.setInt(5, tweet3.getLikeCount());
+            tst3.setInt(6, tweet3.getRetweetCount());
+            tst3.setInt(7, tweet3.getReplyCount());
+            tst3.setInt(8, tweet3.getQuoteCount());
 
-            tst3.setInt(9,tweet3.getTweetType());
-            tst3.setBoolean(10, tweet3.getIsFavStar());
+            tst3.setBoolean(9, tweet3.getIsFavStar());
+
+            tst3.setString(10, tweet3.getTweetDate());
+            tst3.setString(11, tweet3.getTweetTime());
             
-            tst3.executeUpdate();
+            tst3.setString(12, tweet3.getTweetImageString());
+            tst3.setString(13, tweet3.getProfilePicString());
 
+            tst3.executeUpdate();
             //!TEST
 
 
@@ -138,7 +145,6 @@ public class TimeLine {
         // Sort the timeline based on timestamp or any other criteria
         sortTimeline(followTweets);
 
-
     }
 
     public ArrayList<Tweet> retrieveTweetsByUsername(String followingUsername) {
@@ -165,51 +171,41 @@ public class TimeLine {
     
             // Retrieve the tweets
             while (resultSet.next()) {
+            
                 // Retrieve the tweet details from the result set
 
-                int tweetid = resultSet.getInt("tweetid");
+                int tweetid = resultSet.getInt("tweetId");
                 String tweetusername = resultSet.getString("username");
+                String tweetFirstname = resultSet.getString("firstname");
                 String text = resultSet.getString("text");
 
                 int likeCount = resultSet.getInt("likeCount");
                 int retweetCount = resultSet.getInt("retweetCount");
                 int replyCount = resultSet.getInt("replyCount");
+                int quoteCount = resultSet.getInt("quoteCount");
+
+                boolean isFavStar = resultSet.getBoolean("isFavStar");
 
                 String tweetDate = resultSet.getString("tweetDate");
-                
-                boolean isFavStar = resultSet.getBoolean("isFavStar");
-                int tweetType = resultSet.getInt("tweetType"); 
-                String tweetTime = resultSet.getString("tweetTime"); 
-                
+                String tweetTime = resultSet.getString("tweetTime");
+
+                String tweetImageString = resultSet.getString("tweetImage");
+                String profilePicString = resultSet.getString("profilePic");
+
                 Tweet tweet;
             
-                if (tweetType == 1) {
-                    // Create a MessageTweet object
-                    tweet = new MessageTweet(text, likeCount, retweetCount, replyCount, tweetid, isFavStar, tweetusername, tweetDate, tweetTime);
-
-                } 
-                else if (tweetType == 2) {
-                    // Retrieve the photo details from the result set
-                    // Assuming you have the necessary columns in the photo table
-                    // and a method to retrieve photo details based on tweetid
-
-                    //NOT COMPLETE YET
-                    ArrayList<Photo> photos = retrievePhotosByTweetId(tweetid);
-            
-                    // Create a PhotoTweet object
-                    tweet = new PhotoTweet(text,likeCount,retweetCount,replyCount,tweetid,isFavStar,tweetDate,tweetTime,tweetusername,photos);
-
-
-                } else {
-                    // Handle unknown tweet types or any other logic you need
-                    continue; // Skip this iteration of the loop
-                }
-            
+                
+                // Create a MessageTweet object
+                tweet = new Tweet(text, likeCount, retweetCount, replyCount,quoteCount, tweetid, isFavStar, tweetusername, tweetFirstname ,tweetDate, tweetTime, tweetImageString, profilePicString);
+                
                 tweets.add(tweet);
+                
             }
 
             resultSet.close();
             preparedStatement.close();
+
+            //another Query to add favestars tweets
 
             String query0 = "SELECT * FROM tweet WHERE isFavStar = 1 AND username != ?";
             preparedStatement = connection.prepareStatement(query0);
@@ -221,44 +217,30 @@ public class TimeLine {
             while (resultSet.next()) {
                 // Retrieve the tweet details from the result set
 
-                int tweetid = resultSet.getInt("tweetid");
+                int tweetid = resultSet.getInt("tweetId");
                 String tweetusername = resultSet.getString("username");
+                String tweetFirstname = resultSet.getString("firstname");
                 String text = resultSet.getString("text");
 
                 int likeCount = resultSet.getInt("likeCount");
                 int retweetCount = resultSet.getInt("retweetCount");
                 int replyCount = resultSet.getInt("replyCount");
+                int quoteCount = resultSet.getInt("quoteCount");
+
+                boolean isFavStar = resultSet.getBoolean("isFavStar");
 
                 String tweetDate = resultSet.getString("tweetDate");
-                
-                boolean isFavStar = resultSet.getBoolean("isFavStar");
-                int tweetType = resultSet.getInt("tweetType"); 
-                String tweetTime = resultSet.getString("tweetTime"); 
+                String tweetTime = resultSet.getString("tweetTime");
+
+                String tweetImageString = resultSet.getString("tweetImage");
+                String profilePicString = resultSet.getString("profilePic");
                 
                 Tweet tweet;
             
-                if (tweetType == 1) {
-                    // Create a MessageTweet object
-                    tweet = new MessageTweet(text, likeCount, retweetCount, replyCount, tweetid, isFavStar, tweetusername, tweetDate, tweetTime);
+               
+                // Create a MessageTweet object
+                tweet = new Tweet(text, likeCount, retweetCount, replyCount,quoteCount, tweetid, isFavStar, tweetusername, tweetFirstname ,tweetDate, tweetTime, tweetImageString, profilePicString);
 
-                } 
-                else if (tweetType == 2) {
-                    // Retrieve the photo details from the result set
-                    // Assuming you have the necessary columns in the photo table
-                    // and a method to retrieve photo details based on tweetid
-
-                    //NOT COMPLETE YET
-                    ArrayList<Photo> photos = retrievePhotosByTweetId(tweetid);
-            
-                    // Create a PhotoTweet object
-                    tweet = new PhotoTweet(text,likeCount,retweetCount,replyCount,tweetid,isFavStar,tweetDate,tweetTime,tweetusername,photos);
-
-
-                } else {
-                    // Handle unknown tweet types or any other logic you need
-                    continue; // Skip this iteration of the loop
-                }
-            
                 tweets.add(tweet);
             }
             
@@ -282,73 +264,15 @@ public class TimeLine {
             }
         }
     
-        
-
         return tweets;
-    }
-
-    private ArrayList<Photo> retrievePhotosByTweetId(int tweetid) {
-
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        
-    
-        try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-    
-            // Connect to the MySQL database
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
-    
-            // Prepare the SQL statement with a parameter
-            String query = "SELECT * FROM photo WHERE tweetId = ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1,tweetid); // Set the parameter value
-    
-            // Execute the query
-            resultSet = preparedStatement.executeQuery();
-    
-            // Retrieve the photos
-            ArrayList<Photo> photos = new ArrayList<>();
-            while (resultSet.next()) {
-
-                // Retrieve the photo details from the result set
-                // ...retrieve the necessary photo information from the result set...
-                // Create a Photo object
-                //Photo photo = new Photo();
-                //photos.add(photo);
-            
-            }
-            
-            return photos;
-    
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // Close the resources
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        return null;
     }
 
     public ArrayList<Tweet> getFollowTweets() {
         return followTweets;
+    }
+
+    public String getUsername(){
+        return username;
     }
 
     private void sortTimeline(ArrayList<Tweet> followTweets) {
@@ -363,17 +287,6 @@ public class TimeLine {
                 return dateTime2.compareTo(dateTime1); // Sort in descending order (newest first)
             }
         });
-    }
-
-    public String showTimeline() {
-        StringBuilder timelineBuilder = new StringBuilder();
-        
-        // Iterate through the tweets in the timeline and generate the display
-        for (Tweet tweet : followTweets) {
-            timelineBuilder.append(tweet.getUsername()).append(": ").append(tweet.getText()).append("\n");
-        }
-        
-        return timelineBuilder.toString();
     }
 
 }

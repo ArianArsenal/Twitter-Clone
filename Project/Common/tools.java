@@ -1,25 +1,22 @@
 package Common;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.*;
 
-//import java.time.LocalDate;
-import java.time.LocalDateTime;
-// import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
+import Common.models.Poll;
+import Common.models.Tweet;
 import Common.models.User;
 
-
-// import com.mysql.cj.protocol.Resultset;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.sql.Statement;
+
+
 
 public class tools {
 
@@ -221,22 +218,6 @@ public class tools {
         return false;
     }
 
-    public static List<String> CountryList() {
-        
-        List<String> countryList = new ArrayList<>();
-    
-        String[] countryCodes = Locale.getISOCountries();
-    
-        for (String countryCode : countryCodes) {
-            Locale.Builder localeBuilder = new Locale.Builder();
-            Locale locale = localeBuilder.setRegion(countryCode).build();
-            String countryName = locale.getDisplayCountry();
-            countryList.add(countryName);
-        }
-    
-        return countryList;
-    }
-
     public static void InsertUser(User user) {
 
         Connection connection = null;
@@ -251,7 +232,7 @@ public class tools {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
     
             // Prepare the SQL statement with a parameter
-            String query = "INSERT INTO USERS VALUES (?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO USERS VALUES (?,?,?,?,?,?,?,?,?,?)";
 
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, user.getFirstname()); // Set the parameter value
@@ -263,7 +244,7 @@ public class tools {
             preparedStatement.setString(7, user.getDatejoined()); // Set the parameter value
             preparedStatement.setString(8, user.getCountry()); // Set the parameter value
             preparedStatement.setString(9, user.getBirthdate()); // Set the parameter value
-
+            preparedStatement.setString(10, user.getProfilePicString()); // Set the parameter value
     
             // Execute the query
             preparedStatement.execute();
@@ -397,8 +378,395 @@ public class tools {
 
     }
 
-    //! TEST
+    public static void InsertPoll(Poll poll){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "INSERT INTO Polls VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, poll.getUsername()); // Set the parameter value
+            preparedStatement.setString(2, poll.getQuestion()); // Set the parameter value
+            preparedStatement.setString(3, poll.getOption1()); // Set the parameter value
+            preparedStatement.setString(4, poll.getOption2()); // Set the parameter value
+            preparedStatement.setString(5, poll.getOption3()); // Set the parameter value
+            preparedStatement.setString(6, poll.getOption4()); // Set the parameter value
+            preparedStatement.setString(7, poll.getDateCreated()); // Set the parameter value
+            preparedStatement.setInt(8, poll.getOption1Votes()); // Set the parameter value
+            preparedStatement.setInt(9, poll.getOption2Votes()); // Set the parameter value
+            preparedStatement.setInt(10, poll.getOption3Votes()); // Set the parameter value
+            preparedStatement.setInt(11, poll.getOption4Votes()); // Set the parameter value
+
+    
+            // Execute the query
+            preparedStatement.execute();
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T castObject(Object obj) {
+        return (T) obj;
+    }
+
+    public static User getUser(String usersearch) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = null;
+
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT * FROM USERS WHERE username = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, usersearch); // Set the parameter value
+
+            // Execute the query and retrieve the result set
+            resultSet = preparedStatement.executeQuery();
+
+            // Check if the result set has any rows
+            if (resultSet.next()) {
+                // Extract the user data from the result set
+                String firstname = resultSet.getString("name");
+                String lastname = resultSet.getString("lastname");
+                String username = resultSet.getString("username");
+                String phonenumber = resultSet.getString("phonenumber");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String country = resultSet.getString("country");
+                String profileImage = resultSet.getString("profileImage");
+                String birthdate = resultSet.getString("birthdate");
+
+                String[] token = birthdate.split("-");
+
+                int year = Integer.parseInt(token[0]);
+                int month = Integer.parseInt(token[1]);
+                int day = Integer.parseInt(token[2]);
+
+                // Create a new User object with the retrieved data
+                user = new User(firstname, lastname, username, password, email, phonenumber, country, year, month, day, profileImage);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return user;
+    }
+
     public static void main(String[] args) {
         CurrentTime();
     }
+
+    public static void InsertTweet(Tweet newTweet) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+    
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query2 = "INSERT INTO tweet (tweetId, username , firstname , text , likeCount , retweetCount , replyCount , quoteCount , isFavStar , tweetDate , tweetTime, tweetImage , profilePic ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+
+            preparedStatement = connection.prepareStatement(query2);
+
+            preparedStatement.setInt(1, newTweet.hashCode());
+            preparedStatement.setString(2, newTweet.getUsername());
+            preparedStatement.setString(3, newTweet.getFirstname());
+            preparedStatement.setString(4, newTweet.getText());
+
+            preparedStatement.setInt(5, newTweet.getLikeCount());
+            preparedStatement.setInt(6, newTweet.getRetweetCount());
+            preparedStatement.setInt(7, newTweet.getReplyCount());
+            preparedStatement.setInt(8, newTweet.getQuoteCount());
+            preparedStatement.setBoolean(9, newTweet.getIsFavStar());
+
+            preparedStatement.setString(10, newTweet.getTweetDate());
+            preparedStatement.setString(11, newTweet.getTweetTime());
+
+            preparedStatement.setString(12, newTweet.getTweetImageString());
+            preparedStatement.setString(13, newTweet.getProfilePicString());
+
+            // Execute the query
+            preparedStatement.execute();
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+
+    }
+
+    public static String FollowCount(String username){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement1 = null;
+        ResultSet resultSet1 = null;
+        
+
+        int Followercount = 0;
+        int Followingcount = 0;
+
+        try {
+
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+    
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+    
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT following_id FROM follow WHERE username = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username); // Set the parameter value
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+    
+            
+            // Retrieve the following usernames
+            while (resultSet.next()) {
+                //String followingUsername = resultSet.getString("following_id");
+                Followingcount++;
+            }
+
+            // preparedStatement = null;
+            // resultSet = null;
+
+            String query1 = "SELECT username FROM follow WHERE following_id = ?";
+            preparedStatement1 = connection.prepareStatement(query1);
+            preparedStatement1.setString(1, username); // Set the parameter value
+            // Execute the query
+            resultSet1 = preparedStatement1.executeQuery();
+    
+            
+            // Retrieve the followers usernames
+            while (resultSet1.next()) {
+                //String followingUsername = resultSet.getString("following_id");
+                Followercount++;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return Followercount + "$" + Followingcount;
+
+    }
+
+    public static ArrayList<User> searchUser(String key) {
+
+        ArrayList<User> searchResults = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+
+            // Prepare the SQL statement with parameters
+            String query = "SELECT * FROM USERS WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "%" + key + "%"); // Search for username containing the key
+            preparedStatement.setString(2, "%" + key + "%"); // Search for firstname containing the key
+            preparedStatement.setString(3, "%" + key + "%"); // Search for lastname containing the key
+
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+
+            // Process the result set
+            while (resultSet.next()) {
+
+                String username = resultSet.getString("username");
+                String firstname = resultSet.getString("firstname");
+                String profileImage = resultSet.getString("profileImage");
+
+                // Create a User object and add it to the searchResults list
+                
+                User user = new User(firstname,username,profileImage);
+
+                searchResults.add(user);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return searchResults;
+    }
+
+    public static String Block(){
+
+        return "success"; 
+
+    }
+
+    public static String follow(String username, String guestuser) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Connect to the MySQL database
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
+
+            // Check if the user is already being followed
+            String checkQuery = "SELECT * FROM follow WHERE username = ? AND following_id = ?";
+            preparedStatement = connection.prepareStatement(checkQuery);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, guestuser);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // User is already being followed
+                return "duplicate";
+            }
+
+            // Prepare the SQL statement with a parameter
+            String insertQuery = "INSERT INTO follow (username, following_id) VALUES (?, ?)";
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, guestuser);
+
+            // Execute the query
+            preparedStatement.execute();
+
+            return "success";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
+

@@ -1,21 +1,24 @@
-package Common.models.TweetModels;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package Common.models;
+
+
+import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import javafx.scene.image.Image;
 
-public abstract class Tweet {
 
+public class Tweet implements Serializable {
+
+    
     private String username;
     private String text;
     private int likeCount;  //if >= 10  == favstar
     private int retweetCount;
     private int replyCount;
+    private int quoteCount;
 
     //Tweet Date
     private int year;
@@ -28,19 +31,30 @@ public abstract class Tweet {
     private int second;
 
     private boolean isFavStar;
-    private int tweetType;
+    //private int tweetType;
+
+    private String tweetImage;
+    private String firstname;
+    private String profilePic;
+
+    //private ArrayList<Tweet> replies;
+    //private ArrayList<Tweet> quotes;
+    //private ArrayList<Tweet> retweets;
+
 
 
     //for creating a new tweet
-    public Tweet(String text,String username,int tweetType) {
+    public Tweet(String text,String username,String firstname ,String tweetImage,String profilePic) {
+        
         this.text = text;
         this.username = username;
 
         this.likeCount = 0 ;
         this.retweetCount = 0 ;
         this.replyCount = 0 ;
+        this.quoteCount = 0;
         this.isFavStar = false;
-        this.tweetType = 1; //1 = message tweet , 2 = photo tweet
+        // this.tweetType = 1; //1 = message tweet , 2 = photo tweet
 
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -54,19 +68,28 @@ public abstract class Tweet {
         this.hour = currentTime.getHour();
         this.minute = currentTime.getMinute();
         this.second = currentTime.getSecond();
+
+        this.tweetImage = tweetImage;
+        this.firstname = firstname;
+        this.profilePic = profilePic;
         
     }
 
     //Another Constructor for when we want to fetch the tweets from DataBase
     //for fetching tweets from database
-    public Tweet(String text,int likeCount,int retweetCount,int replyCount,boolean isFavStar,String username,String tweetDate,String tweetTime){
+    //todo add image to the constructor and get the image from database
+
+    public Tweet(String text,int likeCount,int retweetCount,int replyCount,int quoteCount,int tweetId,boolean isFavStar,String username,String firstname,String tweetDate,String tweetTime,String tweetImage ,String profilePic){
 
         this.text = text;
         this.username = username;
+        this.firstname = firstname;
 
         this.likeCount = likeCount;
         this.retweetCount = retweetCount;
         this.replyCount = replyCount;
+        this.quoteCount = quoteCount;
+
         this.isFavStar = isFavStar;
 
 
@@ -82,7 +105,9 @@ public abstract class Tweet {
         this.minute = Integer.parseInt(time[1]);
         this.second = Integer.parseInt(time[2]);
 
-        
+        this.tweetImage = tweetImage;
+        this.profilePic = profilePic;
+
     }
 
     //Converts a tweet's ID into to hashCode
@@ -112,6 +137,37 @@ public abstract class Tweet {
     public String getUsername() {
         return username;
     }
+    public String getFirstname() {
+        return firstname;
+    }
+
+
+
+    public Image getProfilePic() {
+
+        Image pic = new Image(Path.of(this.profilePic).toUri().toString());
+
+        return pic;
+    }
+    public Image getTweetImage() {
+
+        Image image = new Image(Path.of(this.tweetImage).toUri().toString());
+
+        return image;
+    }
+    
+    public String getTweetImageString() {
+        return tweetImage;
+    }
+
+    public String getProfilePicString() {
+        return profilePic;
+    }
+
+
+
+    
+
     public String getText() {
         return text;
     }
@@ -124,6 +180,11 @@ public abstract class Tweet {
     public int getReplyCount() {
         return replyCount;
     }
+    public int getQuoteCount() {
+        return quoteCount;
+    }
+
+
     public boolean getIsFavStar() {
 
         if (this.likeCount >= 10){
@@ -132,9 +193,7 @@ public abstract class Tweet {
 
         return isFavStar;
     }
-    public int getTweetType() {
-        return tweetType;
-    }
+    
     
     public String getTweetDate() {
         return year + "-" + month + "-" + day;
@@ -142,63 +201,5 @@ public abstract class Tweet {
     public String getTweetTime() {
         return hour + ":" + minute + ":" + second;
     }
-
-    //todo add tweets
-    public static void AddTweet(String username,int tweetTYPE){
-
-        if(tweetTYPE == 1){
-            Tweet tweet = new MessageTweet(username, username, tweetTYPE);
-        }
-        else{
-            Tweet tweet = new PhotoTweet("text", username, tweetTYPE, null);
-        }
-
-        
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
     
-        try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-    
-            // Connect to the MySQL database
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ap_project", "root", "ari82moh");
-    
-            // Prepare the SQL statement with a parameter
-            String query = "INSERT INTO TWEETS VALUES (?,?,?)";
-
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, username); // Set the parameter value
-            preparedStatement.setString(2, "tweet"); // Set the parameter value
-            preparedStatement.setString(3, "date"); // Set the parameter value
-
-    
-            // Execute the query
-            preparedStatement.execute();
-    
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // Close the resources
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
-
 }

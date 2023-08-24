@@ -1,142 +1,176 @@
 package Common.Menus;
 
+
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import Common.connection;
 import Common.tools;
+import Common.models.Poll;
 import Common.models.TimeLine;
-import Common.models.TweetModels.Tweet;
+import Common.models.Tweet;
+import Common.models.User;
+import Server.Logs.logs;
 
 public class timelineMenus {
     
-    //client side
-    public static void ClientTimeLine(OutputStream out , InputStream in,String username) throws IOException{
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
-        Scanner sc = new Scanner(System.in);
-
-        //gets the TimeLine menu and show it
-        String serverRespone = connection.ClientRecieve(in);
-        System.out.println(serverRespone);
-
-        //send the user's timeline choice
-        String clientTimeLineChoice = sc.nextLine();
-        connection.ClientSend(out,clientTimeLineChoice);
-
-        switch (clientTimeLineChoice) {
-            case "1":
-                //Home Shows tweets of timeline
-                HomeMenuClient(out,in,username);
-                break;
-            case "2":
-                //Shows Search Bar for searching name, lastname, username
-                break;
-            case "3":
-                //Shows the current user profile
-                ProfileMenuClient(out,in);
-                break;
-            case "4":
-                //Direct message 
-                break;
-            case "5":
-                //Setting 
-                break;
-            case "6":
-                //Exit 
-                System.exit(0);
-                break;
-            default:
-                connection.ServerSend(out, "Incorret Input");
-                break;
-        }
-
-        sc.close();
-        return;
-
-    }
-
     //server side
-    public static void ServerTimeLine(OutputStream out , InputStream in,String username) throws IOException{
+    public static void ServerTimeLine(OutputStream out , InputStream in,ObjectInputStream objectIn,ObjectOutputStream objectOut,User user) throws IOException{
 
-        connection.ServerSend(out, "===============\n1-Home\n2-Search\n3-Profile\n4-Message\n5-Setting\n6-Logout\n===============\n");
 
-        //gets the timeline choice from the user
-        String TimeLineChoice = connection.ServerRecieve(in);
+        TimeLine timeLine = new TimeLine(user.getUsername());
+        timeLine.retrieveFollowings(user.getUsername());
 
-        switch (TimeLineChoice) {
-            case "1":
-                //TODO the main timeline menu
-                ///@ Create a new Timeline obj ( it has a show method so click on show on it)
-                HomeMenuServer(out , in , username);
+        ArrayList<Tweet> tweets = timeLine.getFollowTweets();
 
-                break;
-            case "2":
+        //sends the arraylist to client
+        //connection.ServerSendObject(objectOut, tweets);
 
-                break;
-            case "3":
-                //goes in the server side of Profile menu
-                ProfileMenuServer(out,in);
-                break;
-            case "4":
-                
-                break;
-            case "5":
 
-                break;
-            case "6":
-                
-                return;
-            default:
-                connection.ServerSend(out, "Incorret Input");
-                break;
-        }
+    
+        // for (Tweet tost : tweets) {
 
-    }
+        //     String text = tost.getText();
+        //     int likeCount = tost.getLikeCount();
+        //     int retweetCount = tost.getReplyCount();
+        //     int replyCount = tost.getReplyCount();
+        //     int quoteCount = tost.getQuoteCount();
+        //     int tweetId = tost.hashCode();
+        //     boolean isFavStar = tost.getIsFavStar();
+        //     String username = tost.getUsername();
+        //     String firstname = tost.getFirstname();
+        //     String tweetDate = tost.getTweetDate();
+        //     String tweetTime = tost.getTweetTime();
+        //     String tweetImage = tost.getTweetImageString();
+        //     String profilePic = tost.getProfilePicString();
 
-    public static void ProfileMenuClient(OutputStream out , InputStream in) throws IOException{
+        //     String datas = text + "$" + likeCount + "$" + retweetCount + "$" + replyCount + "$" + quoteCount + "$" + tweetId + "$" + isFavStar + "$" + username + "$" + firstname + "$" +tweetDate + "$" + tweetTime + "$" + tweetImage + "$" + profilePic + "*E" ;
 
-        Scanner sc = new Scanner(System.in);
+        //     connection.ServerSend(out, datas);
 
-        System.out.println(connection.ClientRecieve(in));
+        // }
+
+        //objectOut.writeObject(tweets);
+
         
-        String profileoption = sc.nextLine();
-        connection.ClientSend(out,profileoption);
 
-        switch (profileoption) {
+        // TODO should show the profile pic
+        // TODO should show the tweets related to this person
+        // TODO Add his own tweets to timeline as well
 
-            case "1":
-                
-                break;
-            case "2":
-                
-                break;
-            case "3":
-                
-                break;
-            case "4":
-                
-                sc.close();
-                return;
+        
+        while(true){
 
-            default:
-                break;
-        }
 
-        sc.close();
+            //send tweets based on the timeline controller
+
+            String option = connection.ServerRecieve(in);
+            //test
+            System.out.println(option + "Selected");
+
+            switch (option) {
+
+                case "Home":
+                    
+                
+                    break;
+
+                case "Tweet" : //goes into TweetController
+
+                    String datas4 = connection.ServerRecieve(in);
+
+                    String[] tokens = datas4.split("$");
+
+                    String text = tokens[0];
+                    String imagepath = tokens[1];
+
+                    if(imagepath.isEmpty()){
+                        imagepath = null;
+                    }
+
+                    //create tweet 
+                    Tweet newTweet = new Tweet(text, user.getUsername() , user.getFirstname() , imagepath , user.getProfilePicString());
+
+                    tools.InsertTweet(newTweet);
+
+                    logs.TweetLog(user.getUsername(), text , imagepath);
+
+                    //goes to Timeline again
+                    break;
+
+                
+
+                case "Explore":
+
+                    //todo 
+                    //! client side not handled yet 
+
+                    String key = connection.ServerRecieve(in);
+
+                    ArrayList<User> temp = tools.searchUser(key);
+
+                    connection.ServerSendObject(objectOut,temp);
+
+
+
+                    break;
+                case "Direct":
+                    
+                    break;
+                case "Profile":
+                    
+                    break;
+                case "Poll":
+                    
+                    String datas = connection.ServerRecieve(in);
+
+                    if(datas.equals("return")){
+                        continue;
+                    }
+
+                    String[] token = datas.split(",");
+
+                    String question = token[0];
+                    String option1 = token[1];
+                    String option2 = token[2];
+                    String option3 = token[3];
+                    String option4 = token[4];
+
+                    //should create a new poll object and send it to the database
+                    Poll poll = new Poll(user.getUsername(), question, option1, option2, option3, option4);
+                    
+                    tools.InsertPoll(poll);
+
+                    //add logs
+                    logs.PollLog(user.getUsername());
+
+                    System.out.println("Poll Created Successfully");
+
+                    break;
+                case "Exit":
+
+                    return;
+                default:
+                    System.out.println("Unkowns Option - ERROR 404");
+                    break;
+            }
+
+        }        
+
     }
 
     public static void ProfileMenuServer(OutputStream out , InputStream in) throws IOException{
-        //shows the options
+        
 
-        connection.ServerSend(out,"===============\n1-Edit Bio\n2-Change Avatar\n3-Change Header\n4-Back\n===============\n");
+       
 
         String profileoption = connection.ServerRecieve(in);
+
         switch (profileoption) {
 
             case "1":
@@ -161,75 +195,39 @@ public class timelineMenus {
 
     public static void HomeMenuServer(OutputStream out , InputStream in, String username){
 
+        //!TEST
         //add new tweet 
         
 
         //makes a timeline object 
-        TimeLine userTimeLine = new TimeLine(username);
-
-        userTimeLine.retrieveFollowings(username);
-
-        ArrayList<Tweet> tweets = userTimeLine.getFollowTweets();
-        
-        for (Tweet tweet : tweets) {
-
-            // Process each tweet here
-            System.out.println("=====" + tweet.getUsername() + "=====");
-            System.out.println(tweet.getText());
-            System.out.println("Likes: " + tweet.getLikeCount());
-            System.out.println("Retweets: " + tweet.getRetweetCount());
-            System.out.println("Comments: " + tweet.getReplyCount());
-            
-            //should now calculate the time passed from the tweet
-
-            String tweetTime = tools.CalculateTimePassed(tweet.getTweetTime(),tweet.getTweetDate());
-
-
-
-            System.out.println("============" + tweetTime + "========================");
-        }
-
-        
-        
-
-    }
-
-
-
-    public static void HomeMenuClient(OutputStream out , InputStream in, String username) throws IOException{
-
-        //shows the tweets 
-
-        //add new tweet
-        
-        //make a new tweet object and show it
         // TimeLine userTimeLine = new TimeLine(username);
-        // connection.ServerSend(out, userTimeLine.showTimeline());
 
-        // //gets the tweet choice from the user
-        // String tweetChoice = connection.ServerRecieve(in);
+        // userTimeLine.retrieveFollowings(username);
 
-        // switch (tweetChoice) {
-        //     case "1":
-        //         //like
-        //         break;
-        //     case "2":
-        //         //retweet
-        //         break;
-        //     case "3":
-        //         //comment
-        //         break;
-        //     case "4":
-        //         //back
-        //         return;
-        //     default:
-        //         break;
+        // ArrayList<Tweet> tweets = userTimeLine.getFollowTweets();
+        
+        // for (Tweet tweet : tweets) {
+
+        //     // Process each tweet here
+        //     System.out.println("=====" + tweet.getUsername() + "=====");
+        //     System.out.println(tweet.getText());
+        //     System.out.println("Likes: " + tweet.getLikeCount());
+        //     System.out.println("Retweets: " + tweet.getRetweetCount());
+        //     System.out.println("Comments: " + tweet.getReplyCount());
+            
+        //     //should now calculate the time passed from the tweet
+
+        //     String tweetTime = tools.CalculateTimePassed(tweet.getTweetTime(),tweet.getTweetDate());
+
+
+
+        //     System.out.println("============" + tweetTime + "========================");
         // }
 
-
-
+        
+        
 
     }
 
-
 }
+

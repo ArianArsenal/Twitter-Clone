@@ -14,15 +14,31 @@ public class logs {
         LocalTime currentTime = LocalTime.now();
         LocalDate currentDate = LocalDate.now();
 
-        String logMessage = "User Created: " + username + " | Create Time: " + formatTime(currentTime) + " " + currentDate;
+        String logMessage = "User Signed Up: " + username + " | Sign-Up Time: " + formatTime(currentTime) + " " + currentDate;
         writeLog(logMessage);
     }
 
-    public static void SignInLog(String username) {
+    public static void LoginLog(String username) {
         LocalTime currentTime = LocalTime.now();
         LocalDate currentDate = LocalDate.now();
 
-        String logMessage = "User Signed In: " + username + " | Sign-In Time: " + formatTime(currentTime) + " " + currentDate;
+        String logMessage = "User Logged In: " + username + " | Login Time: " + formatTime(currentTime) + " " + currentDate;
+        writeLog(logMessage);
+    }
+
+    public static void PollLog(String username) {
+        LocalTime currentTime = LocalTime.now();
+        LocalDate currentDate = LocalDate.now();
+
+        String logMessage = "User Created Poll: " + username + " | Create Time: " + formatTime(currentTime) + " " + currentDate;
+        writeLog(logMessage);
+    }
+
+    public static void TweetLog(String username,String text , String imagepath) {
+        LocalTime currentTime = LocalTime.now();
+        LocalDate currentDate = LocalDate.now();
+
+        String logMessage = "User Tweeted: " + username +":"+ text + imagepath +" | Tweet Time: " + formatTime(currentTime) + " " + currentDate;
         writeLog(logMessage);
     }
 
@@ -32,7 +48,7 @@ public class logs {
 
     private static void writeLog(String logMessage) {
         try {
-            String filePath = "C:/Users/Arian/OneDrive/Desktop/Progs/Java/AP_Project/Project/Server/Logs/UsersLogs.txt";
+            String filePath = "C:\\Users\\Arian\\OneDrive\\Desktop\\Progs\\AP_PROJECT\\AP_Project\\Project\\Server\\Logs\\UsersLogs.txt";
             FileWriter fileWriter = new FileWriter(filePath, true);
             fileWriter.write(logMessage + "\n");
             fileWriter.close();

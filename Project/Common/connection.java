@@ -3,6 +3,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+
 public class connection{
 
     //* Client side
@@ -22,6 +28,16 @@ public class connection{
         }
     }
 
+    public static void ClientSendObject(ObjectOutputStream objectOut, Object object) throws IOException {
+        objectOut.writeObject(object);
+        objectOut.flush();
+    }
+
+    public static Object ClientReceiveObject(ObjectInputStream objectIn) throws IOException, ClassNotFoundException {
+        return objectIn.readObject();
+    }
+
+
     //* Server side
 
     public static void ServerSend(OutputStream out, String input) throws IOException {
@@ -38,6 +54,16 @@ public class connection{
             return ""; // or any appropriate value based on your requirements
         }
     }
+
+    public static void ServerSendObject(ObjectOutputStream objectOut, Object object) throws IOException {
+        objectOut.writeObject(object);
+        objectOut.flush();
+    }
+
+    public static Object ServerReceiveObject(ObjectInputStream objectIn) throws IOException, ClassNotFoundException {
+        return objectIn.readObject();
+    }
+
 }
 
 //getting input ways

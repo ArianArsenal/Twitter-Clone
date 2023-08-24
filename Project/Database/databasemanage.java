@@ -39,6 +39,7 @@ public class databasemanage {
                 "datejoined DATE NOT NULL, " +
                 "country VARCHAR(255) NOT NULL, " +
                 "birthdate DATE NOT NULL, " +
+                "profileImage VARCHAR(255), " +
                 "PRIMARY KEY (username, phonenumber, email)" +")";
             statement.execute(sql);
 
@@ -58,30 +59,46 @@ public class databasemanage {
             ")";
             statement.execute(sql3);
 
-
             String sql4 = "CREATE TABLE IF NOT EXISTS tweet (" +
             "tweetId INT PRIMARY KEY AUTO_INCREMENT, " +
             "username VARCHAR(255) NOT NULL, " +
+            "firstname VARCHAR(255), " +
             "text VARCHAR(255), " +
             "likeCount INT, " +
             "retweetCount INT, " +
             "replyCount INT, " +
+            "quoteCount INT, " +
+            "isFavStar BOOLEAN, " +
             "tweetDate VARCHAR(50), " +
             "tweetTime VARCHAR(50), " +
-            "tweetType INT, " +
-            "isFavStar BOOLEAN" +
+            "tweetImage VARCHAR(255), " +
+            "profilePic VARCHAR(255)" +
             ")";
             statement.execute(sql4);
 
 
-            String sql5 = "CREATE TABLE IF NOT EXISTS photo (" +
-            "photoId INT AUTO_INCREMENT PRIMARY KEY," +
-            "tweetId INT," +
-            "filePath VARCHAR(255)" +
+            // String sql5 = "CREATE TABLE IF NOT EXISTS photo (" +
+            // "photoId INT AUTO_INCREMENT PRIMARY KEY," +
+            // "tweetId INT," +
+            // "filePath VARCHAR(255)" +
+            // ")";
+            // statement.execute(sql5);
+
+
+            String sql6 = "CREATE TABLE IF NOT EXISTS Poll (" +
+            "username VARCHAR(255)," +
+            "question VARCHAR(255)," +
+            "option1 VARCHAR(255)," +
+            "option2 VARCHAR(255)," +
+            "option3 VARCHAR(255)," +
+            "option4 VARCHAR(255)," +
+            "dateCreated VARCHAR(255)," +
+            "option1Votes INT," +
+            "option2Votes INT," +
+            "option3Votes INT," +
+            "option4Votes INT" +
             ")";
-            statement.execute(sql5);
-
-
+            statement.execute(sql6);
 
             
 

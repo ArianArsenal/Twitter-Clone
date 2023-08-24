@@ -1,7 +1,13 @@
 package Common.models;
+
+
+import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
-public class User {
+import javafx.scene.image.Image;
+
+public class User implements Serializable{
 
     private String firstname;
     private String lastname;
@@ -23,8 +29,10 @@ public class User {
     private int joinedmonth;
     private int joinedday;
 
+    private String profileImage;
+
     //Constructor
-    public User(String firstname, String lastname, String username, String password, String email, String phonenumber, String country, int year, int month, int day) {
+    public User(String firstname, String lastname, String username, String password, String email, String phonenumber, String country, int year, int month, int day, String profileImage) {
 
         this.firstname = firstname;
         this.lastname = lastname;
@@ -44,6 +52,34 @@ public class User {
         this.joinedyear = currentDate.getYear();
         this.joinedmonth = currentDate.getMonthValue();
         this.joinedday = currentDate.getDayOfMonth();
+
+        //! ???????
+        //todo
+        if (profileImage == null){
+            //Image image = new Image(Path.of("D:\\Programs\\FirstScene\\src\\assests\\5.png").toUri().toString());
+            //this.profileImage = image.toString();
+
+            this.profileImage = "D:\\Programs\\FirstScene\\src\\assests\\5.png";
+        }
+        else {
+            this.profileImage = profileImage;
+        }
+        
+    }
+
+    //Constructor for searching users
+    public User(String firstname , String username , String profileImage){
+        this.firstname = firstname;
+        this.username = username;
+        this.profileImage = profileImage;
+
+        if (profileImage == null){
+            this.profileImage = "D:\\Programs\\FirstScene\\src\\assests\\5.png";
+        }
+        else {
+            this.profileImage = profileImage;
+        }
+
     }
 
     //Necessary Getters
@@ -69,7 +105,6 @@ public class User {
         return country;
     }
 
-
     public int getJoinedyear() {
         return joinedyear;
     }
@@ -83,8 +118,6 @@ public class User {
         return joinedyear + "/" + joinedmonth + "/" + joinedday;
     }
 
-
-    //other Getters to be written
     public int getYear() {
         return year;
     }
@@ -98,29 +131,31 @@ public class User {
         return year + "/" + month + "/" + day;
     }
 
+
+    public Image getProfilePic() {
+
+        Image pic = new Image(Path.of(this.profileImage).toUri().toString());
+
+        return pic;
+    }
+
+    public String getProfilePicString() {
+        return profileImage;
+    }
+
     
-    //Setters
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-    //other Setters to be written
-
-    // unecessary fields will be removed from ToString later
-    // @Override
-    // public String toString() {
-    //     return "User [firstname=" + firstname + ", lastname=" + lastname + ", username=" + username + ", password="
-    //             + password + ", email=" + email + ", phonenumber=" + phonenumber + ", country=" + country + ", year="
-    //             + year + ", month=" + month + ", day=" + day + ", joinedyear=" + joinedyear + ", joinedmonth="
-    //             + joinedmonth + ", joinedday=" + joinedday + "]";
-    // }
 
 
-    public static void Follow() {
-        
-    }
+    
+
+
+    
+    
+
+    
+    
+
+    
     
 
 }
